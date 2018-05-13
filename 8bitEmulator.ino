@@ -54,7 +54,6 @@ const uint16_t data[] = {
     int memory[16]; //RAM
 
     bool hlt; //Halt if set
-    bool rst; //reset all registers
     bool busShow; //output to bus set bit
     bool subtract; //ALU subtract set bit
     bool output; //Output to serial
@@ -137,7 +136,7 @@ void showBus() { // Show Register
 void reset(int rst){ // RESET ALL
   if (rst == 1) {
     a, b, bus, aluSum, pc, mcp = 0;
-    hlt, busShow, subtract, rst, output = 0;
+    hlt, busShow, subtract, output = 0;
   }
 }
 
