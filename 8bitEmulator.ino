@@ -48,15 +48,11 @@ const uint16_t data[] = {
     int pc; //program counter
     int mcp; //Microcode pointer
     int addressRAM; //RAM address
-   // int dataRAM; //Current data for RAM
     int mcEepromAddr; //Address to read from Eeeprom for MC
     int runme;
-    
+
     int memory[16]; //RAM
-    //int eeprom[512]; //EEPROM storage
-    //int code[16];
-    
-    
+
     bool hlt; //Halt if set
     bool rst; //reset all registers
     bool busShow; //output to bus set bit
@@ -66,7 +62,7 @@ const uint16_t data[] = {
     bool readB, writeB; //ReadWriteEnable RegB
     bool readAlu; //Read ALU to bus
     //bool readRAM, writeRAM; //ReadWrite RAM
-    
+
 
 void setup() {
   pinMode (BUS_DATA, OUTPUT);
@@ -76,8 +72,6 @@ void setup() {
   reset(1); //reset all registers
   coder(); //read program code
 }
-
-
 
 void halt(int enableHalt){ //HT
   if(enableHalt == 1){
@@ -89,46 +83,34 @@ void halt(int enableHalt){ //HT
 }
 
 void readRegA(bool readEnable){ // AO
-  if (readEnable == 1) { bus = a;     //Serial.print("AO=1 ");
-  }
+  if (readEnable == 1) { bus = a; }
 }
 
 void writeRegA(bool writeEnable){ // AI
-  if (writeEnable == 1) {a = bus;     //Serial.print("AI=1 ");
-  }
+  if (writeEnable == 1) { a = bus; }
 }
 
 void writeRegB(bool writeEnable){ // BI
-  if (writeEnable == 1) {b = bus;     //Serial.print("BI=1 ");
-  }
+  if (writeEnable == 1) { b = bus; }
 }
 
 void alu(bool readEnable, bool subtract){ // EO SU
   //add A & B registers unless substract bit set, enable to output to bus
   aluSum = (subtract == 1) ? aluSum = a - b : aluSum = a + b;
-  if (readEnable == 1) { bus = aluSum; //Serial.print("EO=1 ");
-  }
-  if (subtract == 1) { //Serial.print("SU=1 ");
-  }
+  if (readEnable == 1) { bus = aluSum; }
+  if (subtract == 1) { }
 }
 
 void pCounterout(bool readEnable){ //CO
-  if(readEnable == 1){
-    bus = pc;
-    //Serial.print("CO=1 ");
-  }
+  if(readEnable == 1){ bus = pc; }
 }
 
 void RAMAddress(bool writeEnable){ //MI
-  if(writeEnable == 1){
-    addressRAM = bus;
-        //Serial.print("MI=1 ");
-  }
+  if(writeEnable == 1){ addressRAM = bus; }
 }
 
 void readRAM(bool readEnable){ //RO
-  if (readEnable == 1) { bus = memory[addressRAM];     //Serial.print("RO=1 ");
-  }
+  if (readEnable == 1) { bus = memory[addressRAM]; }
 }
 
 void writeRAM(bool writeEnable){ //RI
@@ -137,15 +119,12 @@ void writeRAM(bool writeEnable){ //RI
 }
 
 void jmpPcounter(bool jmp){ //JP
-  if (jmp == 1) { pc = bus;     //Serial.print("JP=1 ");
-  }
+  if (jmp == 1) { pc = bus; }
 }
 
 void incPcounter(bool inc){ //CE
-  if(inc == 1) { pc +=1;     //Serial.print("CE=1 ");
-  }
+  if(inc == 1) { pc +=1; }
 }
-
 
 void showBus() { // Show Register
   //shiftout bus to pin 2 and latch pin 4
@@ -188,26 +167,14 @@ void dump() { //dump
   Serial.println();
   Serial.println();
 }
-//int eeprom_read(int addr) {
-//  return eeprom[addr];
-//}
 
-void Registers(){
-  //accessRAM(readRAM, addressRAM, writeRAM, dataRAM);
-  //regA(readA, writeA);
-  //regB(readB, writeB);
-  //alu(readAlu, subtract);
-  //outputBus();
-}
 
 void readInstructRegister(bool readEnable){ // IO
-  if(readEnable == 1){ bus = (i & B00001111);     //Serial.print("IO=1 ");
-  }
+  if(readEnable == 1){ bus = (i & B00001111); }
 }
 
 void writeInstructRegister(bool writeEnable){ // II
-  if(writeEnable == 1){ i = bus;     //Serial.print("II=1 ");
-  }
+  if(writeEnable == 1){ i = bus; }
 }
 
 int getInstruction(int iii){
@@ -231,7 +198,6 @@ void coder(){
 }
 
 void runner(){
-  //Serial.println(bitRead(data[mcEepromAddr],15));
   halt(bitRead(data[mcEepromAddr],15));
   pCounterout(bitRead(data[mcEepromAddr],2));
   readInstructRegister(bitRead(data[mcEepromAddr],11));
@@ -260,6 +226,5 @@ void loop() {
   //dump();
   //showBus();
   //delay(2000);
-  
-}
 
+}
